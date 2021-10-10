@@ -4,7 +4,7 @@
       <NuxtLink to="/" class="logo"><img src="/logoDark.svg" alt="nonpro logo" width="150"></NuxtLink>
 
       <ul>
-        <li><NuxtLink to="/neziskove-organizacie">Organizácie</NuxtLink></li>
+        <li><NuxtLink to="/organizacie">Organizácie</NuxtLink></li>
         <li><img src="/user.svg" alt="User settings" width="20"></li>
       </ul>
     </div>
