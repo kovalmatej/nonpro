@@ -1,5 +1,5 @@
 <template>
-	<a :href="`organizacie/${this.id}`">
+	<a :href="`organizacie/${this.id}`" class="link-container">
 		<div class="preview small-block">
 			<h2>{{ title }}</h2>
 			<h3>IČO: 30686661 | Košice</h3>
@@ -15,10 +15,10 @@
 import GlobalButton from '../Global/GlobalButton.vue'
 export default {
   components: { GlobalButton },
-	name: "NonProfitPreview",
+	name: "SimilarOrganization",
 	props: {
 		id: {
-			type: String,
+			type: String | Number,
 			required: true
 		},
 		title: {
@@ -30,12 +30,15 @@ export default {
 </script>
 
 <style lang="sass" scoped>
+a.link-container
+  flex: 1
 .small-block.preview
   flex-direction: column
-  padding-right: 4rem
+  padding-right: 1rem
   h2
     color: #222
     margin-bottom: 0.8rem
+    font-size: 1.45rem
     &:hover
       text-decoration: underline
   h3

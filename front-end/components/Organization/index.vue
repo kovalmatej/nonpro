@@ -1,6 +1,9 @@
 <template>
 	<div class="wrap">
-		<OrganizationInfo :id="this.$route.params.id"/>
+		<OrganizationInfo 
+      :id="this.$route.params.id" 
+      title="V.I.A.C - neziskova organizacia" 
+    />
     <SimilarOrganizations />
 	</div>
 </template>

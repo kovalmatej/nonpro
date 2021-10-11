@@ -1,7 +1,9 @@
 <template>
 	<div class="block organization-info">
-		text {{ this.id }}
-	</div>
+    <h1>
+      {{ title }}
+    </h1>
+  </div>
 </template>
 
 <script>
@@ -9,7 +11,11 @@ export default {
 	name: "OrganizationInfo",
   props: {
     id: {
-      type: Number,
+      type: String,
+      required: true
+    },
+    title: {
+      type: String,
       required: true
     }
   }
@@ -18,5 +24,5 @@ export default {
 
 <style lang="sass" scoped>
 .organization-info
-  flex: 3
+  flex: 2
 </style>
