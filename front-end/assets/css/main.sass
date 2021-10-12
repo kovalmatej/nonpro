@@ -17,6 +17,9 @@ ul
 h1, h2, h3, h4, h5, h6
   margin: 0
 
+input
+  border: none
+
 /* GLOBALS */
 button
   display: flex
@@ -30,6 +33,18 @@ button
   &:hover
     transition: 0.1s ease-in-out
 
+.input-text
+  border: 0
+  outline: none
+  border-bottom: 2px solid $gray
+  background: transparent
+  font-size: 1.3rem
+  font-weight: bold
+  color: #999
+  padding: 0.8rem 1rem
+  &:focus
+    border-image: linear-gradient(to right, $lightPurple, $lightBlue)
+    border-image-slice: 1
 
 .wrap
   max-width: 1850px

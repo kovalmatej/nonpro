@@ -5,7 +5,7 @@
 
       <ul>
         <li><NuxtLink to="/organizacie">Organizácie</NuxtLink></li>
-        <li><img src="/user.svg" alt="User settings" width="20"></li>
+        <li><NuxtLink to="/auth"><img src="/user.svg" alt="User settings" width="20"></NuxtLink></li>
       </ul>
     </div>
   </nav>
@@ -14,7 +14,6 @@
 <script>
 export default {
   name: "Navigation"
-
 }
 </script>
 
@@ -27,6 +26,7 @@ nav
   -webkit-box-shadow: 0px 12px 20px -6px rgba(0,0,0,0.2)
   box-shadow: 0px 12px 20px -6px rgba(0,0,0,0.2)
   height: $navHeight
+  position: relative
   .wrap
     display: flex
     justify-content: space-between
