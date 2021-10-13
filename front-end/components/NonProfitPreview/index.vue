@@ -5,7 +5,7 @@
 			<h3>IČO: 30686661 | Košice</h3>
 
 			<div class="preview-bottom">
-				<a href="#" class="purple">Viac informácií</a>
+				<span class="purple">Viac informácií</span>
 			</div>
 		</div>
 	</a>
@@ -44,8 +44,10 @@ export default {
 .preview-bottom
   display: flex
   justify-content: flex-end
-  a
+  span
     border-bottom: 2px solid $darkPurple
+    text-transform: uppercase
+    font-weight: medium
     &:hover
       border-bottom: 2px solid transparent
 </style>

@@ -26,4 +26,5 @@ export default {
   display: flex
   gap: 3em
   margin-top: 3em
+  align-items: flex-start
 </style>
