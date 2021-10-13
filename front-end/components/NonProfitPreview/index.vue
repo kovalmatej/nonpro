@@ -2,7 +2,7 @@
 	<a :href="`organizacie/${this.id}`">
 		<div class="preview small-block">
 			<h2>{{ title }}</h2>
-			<h3>IČO: 30686661 | Košice</h3>
+			<h3>IČO: {{ ICO }} | {{ city }}</h3>
 
 			<div class="preview-bottom">
 				<span class="purple">Viac informácií</span>
@@ -18,11 +18,19 @@ export default {
 	name: "NonProfitPreview",
 	props: {
 		id: {
-			type: String,
+			type: String | Number,
 			required: true
 		},
 		title: {
-			type: String,
+			type: String | Number,
+			required: true
+		},
+		ICO: {
+			type: String | Number,
+			required: true
+		},
+		city: {
+			type: String | Number,
 			required: true
 		}
 	}
@@ -36,8 +44,8 @@ export default {
   h2
     color: #222
     margin-bottom: 0.8rem
-    &:hover
-      text-decoration: underline
+  &:hover h2
+    text-decoration: underline
   h3
     color: #333
 
@@ -45,9 +53,7 @@ export default {
   display: flex
   justify-content: flex-end
   span
-    border-bottom: 2px solid $darkPurple
+    color: $darkPurple
     text-transform: uppercase
-    font-weight: medium
-    &:hover
-      border-bottom: 2px solid transparent
+    font-weight: bold
 </style>

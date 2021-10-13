@@ -47,13 +47,16 @@ export default {
     nextPage() {
       if(this.isEnd) return;
       this.currentPage = this.currentPage + 1;
+      this.$emit("pagechanged", this.currentPage);
     },
     previousPage() {
       if(this.isStart) return;
       this.currentPage = this.currentPage - 1;
+      this.$emit("pagechanged", this.currentPage);
     },
     changeToPage(i) {
       this.currentPage = i;
+      this.$emit("pagechanged", this.currentPage);
     }
   }
 }

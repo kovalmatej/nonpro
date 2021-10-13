@@ -3,27 +3,19 @@
 		<h1 class="title">Zoznam neziskových organizácií</h1>
 
 		<div class="organizacie">
-			<non-profit-preview title="V.I.A.C neziskova organizacia" id="1"/>
-			<non-profit-preview title="V.I.A.C neziskova organizacia" id="2"/>
-			<non-profit-preview title="V.I.A.C neziskova organizacia" id="3"/>
-			<non-profit-preview title="V.I.A.C neziskova organizacia" id="4"/>
-			<non-profit-preview title="V.I.A.C neziskova organizacia" id="5"/>
-			<non-profit-preview title="V.I.A.C neziskova organizacia" id="6"/>
-			<non-profit-preview title="V.I.A.C neziskova organizacia" id="7"/>
-			<non-profit-preview title="V.I.A.C neziskova organizacia" id="8"/>
-			<non-profit-preview title="V.I.A.C neziskova organizacia" id="9"/>
-			<non-profit-preview title="V.I.A.C neziskova organizacia" id="10"/>
-			<non-profit-preview title="V.I.A.C neziskova organizacia" id="11"/>
-			<non-profit-preview title="V.I.A.C neziskova organizacia" id="12"/>
-			<non-profit-preview title="V.I.A.C neziskova organizacia" id="13"/>
-			<non-profit-preview title="V.I.A.C neziskova organizacia" id="14"/>
-			<non-profit-preview title="V.I.A.C neziskova organizacia" id="15"/>
-			<non-profit-preview title="V.I.A.C neziskova organizacia" id="16"/>
-			<non-profit-preview title="V.I.A.C neziskova organizacia" id="17"/>
-			<non-profit-preview title="V.I.A.C neziskova organizacia" id="18"/>
-			<non-profit-preview title="V.I.A.C neziskova organizacia" id="19"/>
+			<non-profit-preview 
+				:key="i"
+				v-for="(organization, i) in organizations"
+				:title="organization.title" 
+				:id="organization.id"
+				:city="organization.city"
+				:ICO="organization.ICO"
+			/>
 
-			<pagination :numberOfPages="5" />
+			<pagination 
+				:numberOfPages="numberOfPages" 
+				@pagechanged="changeCurrentPage"
+			/>
 		</div>
 	</div>
 </template>
@@ -32,11 +24,51 @@
 import Pagination from '../Global/Pagination.vue';
 import NonProftiPreview from '../NonProfitPreview';
 
+import organizations from '../../organizationsData';
+
 export default {
 	name: "List",
 	components: {
 		NonProftiPreview,
 		Pagination
+	},
+	data() {
+		return {
+			currentPage: 0,
+			displayItems: 5
+		}
+	},
+	computed: {
+		organizations() {
+			let newOrganizations = organizations.filter(
+				(org, i) => { 
+					if(i >= this.indexToDisplayFrom && i < this.maxIndexToDisplayFrom) {
+						return org;
+					}
+				}
+			);
+
+			console.log(newOrganizations);
+
+			return newOrganizations;
+		},
+		numberOfOrganizations() {
+			return organizations.length + 1;
+		},
+		indexToDisplayFrom() {
+			return this.currentPage * this.displayItems;
+		},
+		maxIndexToDisplayFrom() {
+			return (this.currentPage + 1) * this.displayItems;
+		},
+		numberOfPages() {
+			return Math.ceil(organizations.length / this.displayItems)
+		}
+	},
+	methods: {
+		changeCurrentPage(i) {
+			this.currentPage = i;
+		}
 	}
 }
 </script>
