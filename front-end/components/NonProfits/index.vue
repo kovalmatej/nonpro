@@ -1,7 +1,11 @@
 <template>
 	<div class="nonprofit-section">
 		<div class="wrap">
-			<side-filter />
+			<div class="col">
+				<search />
+				<side-filter />
+			</div>
+			
 			<list />
 		</div>
 	</div>
@@ -10,17 +14,26 @@
 <script>
 import SideFilter from './SideFilter.vue'
 import List from "./List.vue"
+import Search from './Search.vue'
 
 export default {
   components: {
 		SideFilter,
-		List
+		List,
+		Search
 	},
-	name: "NonProfits"
+	name:
+     "NonProfits"
 }
 </script>
 
 <style lang="sass" scoped>
+.col
+  display: flex
+  flex-direction: column
+  flex: 5
+  gap: 4rem
+
 .wrap
   width: 90%
   display: flex
