@@ -44,9 +44,9 @@ export default {
 .wrap
   display: flex
   justify-content: center
+  min-height: calc(100vh - 5em)
 
 .main
-  display: flex
   width: 90%
   gap: 4rem
   margin-top: 3rem
