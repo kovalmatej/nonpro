@@ -33,6 +33,7 @@ input
   padding: 1rem 3rem 1rem 1.5rem
   font-size: 1.2rem
   color: $darkBlue
+  outline: none
 
 img
   position: absolute
