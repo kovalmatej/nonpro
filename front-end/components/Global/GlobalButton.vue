@@ -41,4 +41,13 @@ export default {
   &:hover
     background: #FFF
     color: $darkPurple
+.ternary
+  background: $yellow
+  color: #FFF
+  padding: 1.5em 2em
+  font-size: 1em
+  margin-top: 4em
+  border: 2px solid $yellow
+  &:hover
+    background: #f39c12
 </style>

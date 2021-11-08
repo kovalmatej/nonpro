@@ -2,7 +2,14 @@
 	<div class="wrap">
 		<OrganizationInfo 
       :id="this.$route.params.id" 
-      title="V.I.A.C - neziskova organizacia" 
+      title="V.I.A.C - neziskova organizacia"
+      ICO="30686661"
+      city="Košice - Západ"
+      street="Rubínová" 
+      PSC="029 58"
+      type="Občianske združenie"
+      category="Zdravotníctvo a sociálna pomoc"
+      IBAN="SK5411000000002623111750"
     />
     <SimilarOrganizations />
 	</div>
@@ -27,4 +34,6 @@ export default {
   display: flex
   gap: 3em
   margin-top: 3em
+  min-height: calc(100vh - 13em)
+  align-items: flex-start
 </style>

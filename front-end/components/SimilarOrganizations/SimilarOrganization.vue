@@ -1,5 +1,5 @@
 <template>
-	<a :href="`organizacie/${this.id}`" class="link-container">
+	<a :href="`${this.id}`" class="link-container">
 		<div class="preview small-block">
 			<h2>{{ title }}</h2>
 			<h3>IČO: 30686661 | Košice</h3>

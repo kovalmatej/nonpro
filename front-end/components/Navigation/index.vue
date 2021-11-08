@@ -5,7 +5,7 @@
 
       <ul>
         <li><NuxtLink to="/organizacie">Organizácie</NuxtLink></li>
-        <li><NuxtLink to="/auth"><img src="/user.svg" alt="User settings" width="20"></NuxtLink></li>
+        <li><NuxtLink :to="isLogged ? `/users/${userId}` : '/auth'"><img src="/user.svg" alt="User settings" width="20"></NuxtLink></li>
       </ul>
     </div>
   </nav>
@@ -13,7 +13,15 @@
 
 <script>
 export default {
-  name: "Navigation"
+  name: "Navigation",
+  computed: {
+    isLogged() {
+      return true;
+    },
+    userId() {
+      return 1;
+    }
+  }
 }
 </script>
 
