@@ -1,13 +1,13 @@
 <template>
   <div>
-    <Navigation />
     <Faq />
     <Footer />
   </div>
 </template>
 
-<script lang="ts">
-import Vue from 'vue'
+<script>
 
-export default Vue.extend({})
+export default {
+  layout: "clasic"
+}
 </script>

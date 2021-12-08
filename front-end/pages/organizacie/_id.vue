@@ -1,13 +1,16 @@
 <template>
   <div>
-   <Navigation />
-   <Organization />
+   <Organization :isLogged="getIsLogged()" />
    <Footer /> 
   </div>
 </template>
 
-<script lang="ts">
-import Vue from 'vue'
-
-export default Vue.extend({})
+<script>
+import { mapGetters } from "vuex"
+export default {
+  layout: "clasic",
+  methods: {
+    ...mapGetters(["getIsLogged"])
+  },
+}
 </script>

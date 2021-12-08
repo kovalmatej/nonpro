@@ -1,13 +1,21 @@
 <template>
   <div>
-    <Navigation />
     <Admin />
     <Footer />
   </div>
 </template>
 
-<script lang="ts">
-import Vue from 'vue'
-
-export default Vue.extend({})
+<script>
+import { mapGetters } from "vuex"
+export default {
+  layout: "clasic",
+  data() {
+    return {
+      isLogged: this.getIsLogged()
+    }
+  },
+   methods: {
+    ...mapGetters(["getIsLogged"])
+  },
+}
 </script>

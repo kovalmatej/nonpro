@@ -22,8 +22,10 @@ export default {
 		List,
 		Search
 	},
-	name:
-     "NonProfits"
+	name: "NonProfits",
+	props: {
+		isLogged
+	}
 }
 </script>
 

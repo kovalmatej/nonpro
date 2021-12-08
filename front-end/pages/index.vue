@@ -1,6 +1,5 @@
 <template>
   <div>
-    <Navigation />
     <QuestionsForm v-if="showForm" />
     <Hero v-else />
 		<AboutUs v-if="!showForm" />
@@ -8,14 +7,21 @@
   </div>
 </template>
 
-<script lang="ts">
-import Vue from 'vue'
+<script>
+import { mapGetters } from "vuex";
 
-export default Vue.extend({
+export default {
+  layout: "clasic",
   data() {
     return {
-      showForm: false 
+      showForm: false
     }
+  },
+  methods: {
+    ...mapGetters(["getIsLogged"])
+  },async created() {
+    const logged = await this.getIsLogged();
+    this.showForm = logged;
   }
-})
+}
 </script>

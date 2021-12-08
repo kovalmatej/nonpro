@@ -1,13 +1,28 @@
 <template>
   <div>
-    <Navigation />
     <User />
     <Footer />
   </div>
 </template>
 
-<script lang="ts">
-import Vue from 'vue'
+<script>
+import { mapGetters } from "vuex"
 
-export default Vue.extend({})
+
+export default {
+  layout: "clasic",
+  data() {
+    return {
+      isLogged: this.getIsLogged()
+    }
+  },
+  methods: {
+    ...mapGetters(["getIsLogged"])
+  },
+  created() {
+    if(this.isLogged) {
+      this.$router.push("/")
+    }
+  },
+}
 </script>

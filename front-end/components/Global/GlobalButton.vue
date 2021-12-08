@@ -1,5 +1,5 @@
 <template>
-	<button :class="[type]">
+	<button @click="handleClick" :class="[type]">
 		{{ text }}
 	</button>
 </template>
@@ -16,7 +16,13 @@ export default {
 			type: String,
 			required: true
 		}
-	}
+	},
+  methods: {
+    handleClick(e) {
+      e.preventDefault();
+      this.$emit("click");
+    }
+  }
 }
 </script>
 

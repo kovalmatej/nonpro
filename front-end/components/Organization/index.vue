@@ -24,6 +24,9 @@ export default {
   components: {
     OrganizationInfo,
     SimilarOrganizations
+  },
+  props: {
+    isLogged
   }
 }
 </script>

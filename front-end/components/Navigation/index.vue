@@ -6,20 +6,35 @@
       <ul>
         <li><NuxtLink to="/organizacie">Organizácie</NuxtLink></li>
         <li><NuxtLink :to="isLogged ? `/users/${userId}` : '/auth'"><img src="/user.svg" alt="User settings" width="20"></NuxtLink></li>
+        <li v-show="isLogged" @click="logout"><NuxtLink to="/">Odhlásiť sa</NuxtLink></li>
       </ul>
     </div>
   </nav>
 </template>
 
 <script>
+import { mapMutations } from "vuex"
+
 export default {
   name: "Navigation",
   computed: {
-    isLogged() {
-      return true;
-    },
     userId() {
       return 1;
+    }
+  },
+  props: {
+    isLogged: { 
+      type: Boolean,
+      default: false
+    }
+  },
+  methods: {
+    ...mapMutations(["setToken", "setUsername"]),
+    logout() {
+      this.setToken(null);
+      this.setUsername(null);
+      
+      this.$router.go()
     }
   }
 }

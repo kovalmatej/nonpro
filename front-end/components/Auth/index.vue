@@ -21,18 +21,19 @@
       <div v-if="showLoginForm" class="login auth-content">
         <form class="auth-form">
           <div class="auth-block">
-            <label for="e-mail">E-mail:</label>
-            <input type="text" class="input-text">
+            <label for="username">Meno:</label>
+            <input v-model="loginUsername" type="text" class="input-text">
           </div>
 
           <div class="auth-block">
-            <label for="password">Password:</label>
-            <input type="password" class="input-text">
+            <label for="password">Heslo:</label>
+            <input v-model="loginPassword" type="password" class="input-text">
           </div>
 
           <global-button
             type="secondary"
             text="Prihlásiť sa"
+            @click="login"
           ></global-button>
         </form>
       </div>
@@ -40,18 +41,19 @@
       <div v-if="!showLoginForm" class="register auth-content">
         <form class="auth-form">
           <div class="auth-block">
-            <label for="e-mail">E-mail:</label>
-            <input type="text" class="input-text">
+            <label for="username">Meno:</label>
+            <input v-model="registerUsername" type="text" class="input-text">
           </div>
 
           <div class="auth-block">
-            <label for="password">Password:</label>
-            <input type="password" class="input-text">
+            <label for="password">Heslo:</label>
+            <input v-model="registerPassword" type="password" class="input-text">
           </div>
 
            <global-button
             type="secondary"
             text="Registrovať sa"
+            @click="register"
           ></global-button>
         </form>
       </div>
@@ -61,6 +63,7 @@
 </template>
 
 <script>
+import { mapMutations } from "vuex";
 import GlobalButton from "../Global/GlobalButton.vue";
 
 export default {
@@ -70,15 +73,57 @@ export default {
   },
   data() {
     return {
-      showLoginForm: true
+      showLoginForm: true,
+      loginUsername: "",
+      loginPassword: "",
+      registerUsername: "",
+      registerPassword: ""
     }
   },
   methods: {
+    ...mapMutations(["setUsername", "setToken"]),
     displayLoginForm() {
       this.showLoginForm = true;
     },
     displayRegisterForm() {
       this.showLoginForm = false;
+    },
+    async login() {
+      const response = await fetch("http://localhost:5002/user/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          username: this.loginUsername,
+          password: this.loginPassword
+        })
+      });
+
+      const { username, token } = await response.json();
+      this.setUsername(username);
+      this.setToken(token);
+
+      this.$router.go()
+    },
+    async register() {
+      const response = await fetch("http://localhost:5002/user/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          username: this.registerUsername,
+          password: this.registerPassword
+        })
+      });
+
+      const { username, token } = await response.json();
+      
+      this.setUsername(username);
+      this.setToken(token);
+      
+      this.$router.go()
     }
   }
 }
