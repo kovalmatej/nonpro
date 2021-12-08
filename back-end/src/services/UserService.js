@@ -6,7 +6,6 @@ import { pool } from "../db.js";
 
 export const createUser = async ({ username, password }) => {
     const { error, value } = userSchema.validate({ username, password });
-    console.log(error)
 
     if(error === undefined) {
       const findDuplicate = await pool.query(`SELECT id from users WHERE username='${ username }'`)
@@ -14,7 +13,6 @@ export const createUser = async ({ username, password }) => {
       if(findDuplicate.rows.length === 0) {
         const encryptedPassword = await bcrypt.hash(password, 10);
         const insert = pool.query(`INSERT INTO users(username, password) VALUES('${ username }', '${ encryptedPassword }')`);
-        console.log(insert);
         return undefined;
       }
 
@@ -32,6 +30,8 @@ export const loginUser = async ({ username, password }) => {
       const dbPassword = user.rows[0].password;
 
       if(user && await bcrypt.compare(password, dbPassword)) {
+
+
         return undefined;
       }
     }

@@ -1,4 +1,7 @@
 import express from "express";
+import axios from "axios";
+
+import jwt from "jsonwebtoken";
 
 //Service
 import { createUser, loginUser } from "../services/UserService.js";
@@ -6,13 +9,25 @@ import { createUser, loginUser } from "../services/UserService.js";
 export const UserController = express.Router();
 
 UserController.post("/register", async (req, res) => {
+  console.log("Registering user")
   try {
     const errors = await createUser(req.body);
 
     if(errors === undefined) {
-      return res.send("User registered successfully");
+      axios.post("http://localhost:5002/user/login", {
+        username: req.body.username,
+        password: req.body.password
+      })
+        .then(response => {
+          console.log(response.data);
+          res.json(response.data);
+        })
+        .catch(err => {
+          console.log(err);
+        })
+
+      return;
     }else {
-      console.log("error")
       return res.json(errors);
     }
   } catch(e) {
@@ -22,13 +37,18 @@ UserController.post("/register", async (req, res) => {
 });
 
 UserController.post("/login", async (req, res) => {
+  console.log("Loggin user")
   try {
     const errors = await loginUser(req.body);
 
     if(errors === undefined) {
-      return res.send("User logged in successfully");
+      const token = jwt.sign(req.body.username, process.env.JWT_KEY);
+      
+      return res.json({
+        token,
+        username: req.body.username
+      });
     }else {
-      console.log("error")
       return res.json(errors);
     }
   }catch(e) {
