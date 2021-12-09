@@ -24,7 +24,10 @@ export default {
 	},
 	name: "NonProfits",
 	props: {
-		isLogged
+		isLogged: {
+			type: Boolean,
+			default: false
+		}
 	}
 }
 </script>

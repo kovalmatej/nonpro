@@ -5,7 +5,7 @@
 		<div class="organizacie">
 			<non-profit-preview 
 				:key="i"
-				v-for="(organization, i) in organizations"
+				v-for="(organization, i) in filteredOrganizations"
 				:title="organization.title" 
 				:id="organization.id"
 				:city="organization.city"
@@ -24,7 +24,7 @@
 import Pagination from '../Global/Pagination.vue';
 import NonProftiPreview from '../NonProfitPreview';
 
-import organizations from '../../organizationsData';
+import axios from "axios";
 
 export default {
 	name: "List",
@@ -35,12 +35,16 @@ export default {
 	data() {
 		return {
 			currentPage: 0,
-			displayItems: 5
+			displayItems: 5,
+			organizations: [],
 		}
 	},
+	created() {
+		this.fetchOrganizations();
+	},
 	computed: {
-		organizations() {
-			let newOrganizations = organizations.filter(
+		filteredOrganizations() {
+			let newOrganizations = this.organizations.filter(
 				(org, i) => { 
 					if(i >= this.indexToDisplayFrom && i < this.maxIndexToDisplayFrom) {
 						return org;
@@ -48,12 +52,10 @@ export default {
 				}
 			);
 
-			console.log(newOrganizations);
-
 			return newOrganizations;
 		},
 		numberOfOrganizations() {
-			return organizations.length + 1;
+			return this.organizations.length + 1;
 		},
 		indexToDisplayFrom() {
 			return this.currentPage * this.displayItems;
@@ -62,12 +64,18 @@ export default {
 			return (this.currentPage + 1) * this.displayItems;
 		},
 		numberOfPages() {
-			return Math.ceil(organizations.length / this.displayItems)
+			return Math.ceil(this.organizations.length / this.displayItems)
 		}
 	},
 	methods: {
 		changeCurrentPage(i) {
 			this.currentPage = i;
+		},
+		fetchOrganizations() {
+			axios.get("http://localhost:5000/organizations/getAll")
+				.then(res => {
+						this.organizations = res.data;
+				})
 		}
 	}
 }

@@ -15,7 +15,7 @@ export const mutations = {
 };
 
 const checkToken = async (username, userToken) => {
-  const response = await fetch("http://localhost:5002/auth/check", {
+  const response = await fetch("http://localhost:5000/auth/check", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

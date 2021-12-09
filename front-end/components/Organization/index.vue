@@ -1,15 +1,15 @@
 <template>
-	<div class="wrap">
+	<div class="wrap" v-if="!loading">
 		<OrganizationInfo 
       :id="this.$route.params.id" 
-      title="V.I.A.C - neziskova organizacia"
-      ICO="30686661"
-      city="Košice - Západ"
-      street="Rubínová" 
-      PSC="029 58"
-      type="Občianske združenie"
-      category="Zdravotníctvo a sociálna pomoc"
-      IBAN="SK5411000000002623111750"
+      :title="organization.title"
+      :ICO="organization.ico"
+      :city="organization.city"
+      :street="organization.street" 
+      :PSC="organization.psc"
+      :type="organization.pravna_forma"
+      :category="organization.category"
+      :IBAN="organization.iban"
     />
     <SimilarOrganizations />
 	</div>
@@ -19,14 +19,39 @@
 import OrganizationInfo from "./OrganizationInfo.vue";
 import SimilarOrganizations from "../SimilarOrganizations";
 
+import axios from "axios";
+
 export default {
+  layout: "clasic",
 	name: "Organization",
   components: {
     OrganizationInfo,
     SimilarOrganizations
   },
+  created() {
+    this.fetchOrganizationData();
+  },
+  data() {
+    return {
+      organization: {},
+      loading: true,
+    }
+  },
   props: {
-    isLogged
+    isLogged: {
+      type: Boolean,
+      default: false
+    }
+  },
+  methods: {
+    fetchOrganizationData() {
+      axios.get(`http://localhost:5000/organizations/${this.$route.params.id}`)
+        .then(res => {
+          this.organization = res.data;
+      });
+      this.loading = false;
+      console.log(this.organization + "organization");
+    }
   }
 }
 </script>

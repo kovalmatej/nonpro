@@ -14,7 +14,7 @@ UserController.post("/register", async (req, res) => {
     const errors = await createUser(req.body);
 
     if(errors === undefined) {
-      axios.post("http://localhost:5002/user/login", {
+      axios.post("http://localhost:5000/user/login", {
         username: req.body.username,
         password: req.body.password
       })

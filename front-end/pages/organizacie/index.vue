@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<NonProfits :isLogged="getIsLogged()" />
+		<NonProfits :isLogged="isLogged" />
 		<Footer />
 	</div>
 </template>
@@ -9,6 +9,15 @@
 import { mapGetters } from "vuex"
 export default {
 	layout: "clasic",
+	data() {
+		return {
+			isLogged: false
+		}
+	},
+	async created() {
+		const logged = await this.getIsLogged();
+		this.isLogged = logged;
+	},
   methods: {
     ...mapGetters(["getIsLogged"])
   },

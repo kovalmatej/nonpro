@@ -11,10 +11,14 @@ export default {
   layout: "clasic",
   data() {
     return {
-      isLogged: this.getIsLogged()
+      isLogged: false,
     }
   },
-   methods: {
+  async created() {
+    const logged = await this.getIsLogged();
+    this.isLogged = logged;
+  },
+  methods: {
     ...mapGetters(["getIsLogged"])
   },
 }

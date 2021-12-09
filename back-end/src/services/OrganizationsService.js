@@ -7,8 +7,8 @@ const duplicationErrors = [
   "Zadané IČO pod týmto už existuje v databázi.",
 ];
 
-export const createOrganization = async ({title, ico, city, street, psc, pravna_forma, iban, owner}) => {
-    const { error, value } = organizationSchema.validate({ title, ico, city, street, psc, pravna_forma, iban, owner });
+export const createOrganization = async ({title, ico, city, street, psc, pravna_forma, iban, category, owner}) => {
+    const { error, value } = organizationSchema.validate({ title, ico, city, street, psc, pravna_forma, iban, category, owner });
     console.log(error)
 
     if(error === undefined) {
@@ -31,8 +31,8 @@ export const createOrganization = async ({title, ico, city, street, psc, pravna_
 
       // Insert organization into DB
       const insert = pool.query(
-        `INSERT INTO organizations(title, ico, city, street, psc, pravna_forma, iban, owner) 
-        VALUES('${ title }', '${ ico }','${ city }', '${ street || "" }', '${ psc || "" }', '${ pravna_forma || "" }', '${ iban || "" }', '${ owner || 1 }')`
+        `INSERT INTO organizations(title, ico, city, street, psc, pravna_forma, iban, category, owner) 
+        VALUES('${ title }', '${ ico }','${ city }', '${ street || "" }', '${ psc || "" }', '${ pravna_forma || "" }', '${ iban || "" }', '${ category || "" }' '${ owner || 1 }')`
       );
 
       console.log(insert);
@@ -41,4 +41,17 @@ export const createOrganization = async ({title, ico, city, street, psc, pravna_
     }
 
     return {error: error.details.message};
+};
+
+
+export const getAllOrganizations = async () => {
+  const select = await pool.query(`SELECT * FROM organizations`);
+
+  return select.rows;
+};
+
+export const getOrganization = async (id) => {
+  const select = await pool.query(`SELECT * FROM organizations WHERE id=${id}`);
+
+  return select.rows[0];
 };

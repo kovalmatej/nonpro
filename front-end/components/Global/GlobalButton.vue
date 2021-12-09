@@ -56,4 +56,5 @@ export default {
   border: 2px solid $yellow
   &:hover
     background: #f39c12
+    border-color: #f39c12
 </style>
