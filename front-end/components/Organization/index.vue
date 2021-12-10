@@ -2,14 +2,14 @@
 	<div class="wrap" v-if="!loading">
 		<OrganizationInfo 
       :id="this.$route.params.id" 
-      :title="organization.title"
-      :ICO="organization.ico"
-      :city="organization.city"
-      :street="organization.street" 
-      :PSC="organization.psc"
-      :type="organization.pravna_forma"
-      :category="organization.category"
-      :IBAN="organization.iban"
+      :title="organization.title || ''"
+      :ICO="organization.ico || ''"
+      :city="organization.city || ''"
+      :street="organization.street || ''" 
+      :PSC="organization.psc || ''"
+      :type="organization.pravna_forma || ''"
+      :category="organization.category || ''"
+      :IBAN="organization.iban || ''"
     />
     <SimilarOrganizations />
 	</div>
@@ -50,7 +50,6 @@ export default {
           this.organization = res.data;
       });
       this.loading = false;
-      console.log(this.organization + "organization");
     }
   }
 }

@@ -35,11 +35,12 @@ export const getters = {
   getIsLogged: async (state) => {
     const isTokenValid = await checkToken(state.username, state.token);
     if(isTokenValid == "") {
-      console.log("ff")
       return false;
     }
 
-    console.log("gg")
     return !!state.token
+  },
+  getUsername: (state) => {
+    return state.username
   }
 }
