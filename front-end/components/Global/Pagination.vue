@@ -10,7 +10,7 @@
       :key="i" 
       v-for="i in numberOfPages" 
       class="item block"
-      :class="[currentPage === i - 1 ? 'active' : '']"
+      :class="[currentPage === i - 1 ? 'active' : '', currentPage < 12 ? ( i > 12 ? 'hidden' : '') : ( (Math.abs(currentPage - i) > 5 ) ? 'hidden' : '')]"
       @click="changeToPage(i - 1)"
     >{{ i }}</div>
 
@@ -82,4 +82,7 @@ export default {
 
 .item.block.active
   border-bottom: 4px solid $lightPurple
+
+.hidden
+  display: none
 </style>

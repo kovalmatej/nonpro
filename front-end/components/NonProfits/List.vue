@@ -9,7 +9,7 @@
 				:title="organization.title" 
 				:id="organization.id"
 				:city="organization.city"
-				:ICO="organization.ICO"
+				:ICO="organization.ico"
 			/>
 
 			<pagination 

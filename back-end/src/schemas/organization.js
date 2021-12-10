@@ -2,7 +2,7 @@ import Joi from "joi";
 
 export const organizationSchema = Joi.object({
   title: Joi.string().min(3).required(),
-  ico: Joi.string().length(8).required(),
+  ico: Joi.string().required(),
   city: Joi.string().required(),
   street: Joi.string(),
   psc: Joi.string().max(7).alphanum(),
