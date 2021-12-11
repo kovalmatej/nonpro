@@ -8,20 +8,23 @@
 <script>
 import { mapGetters } from "vuex"
 
+import axios from "axios";
 
 export default {
   layout: "clasic",
   data() {
     return {
-      isLogged: this.getIsLogged()
+      isLogged: false
     }
   },
   methods: {
     ...mapGetters(["getIsLogged"])
   },
-  created() {
-    if(this.isLogged) {
-      this.$router.push("/")
+  async created() {
+    const logged = await this.getIsLogged();
+
+    if(!logged) {
+      this.$router.push("/");
     }
   },
 }

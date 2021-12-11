@@ -17,6 +17,7 @@
 					<global-button
 						type="ternary"
 						text="Topovať organizáciu"
+						@click="topOrganization"
 					>
 					</global-button>
 				</div>
@@ -88,10 +89,32 @@
 <script>
 import GlobalButton from "../Global/GlobalButton.vue"
 
+import { mapGetters } from "vuex";
+
+import axios from "axios";
+
 export default {
 	name: "User",
 	components: {
 		GlobalButton
+	},
+	data() {
+		return {
+			window: null,
+		}
+	},
+	beforeMount() {
+		this.window = window;
+	},
+	methods: {
+		...mapGetters(["getUsername"]),
+		async topOrganization() {
+			const res = await axios.post("http://localhost:5000/organizations/top", {
+				organizationId: 46397
+			})
+
+			this.window.location.replace(res.data.url)
+		}
 	}
 }
 </script>

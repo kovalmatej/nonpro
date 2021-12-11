@@ -1,7 +1,7 @@
 import express from "express";
 
 // Service
-import { createOrganization, getAllOrganizations, getOrganization } from "../services/OrganizationsService.js";
+import { createOrganization, getAllOrganizations, getOrganization, topOrganization } from "../services/OrganizationsService.js";
 
 export const OrganizationsController = express.Router();
 
@@ -47,6 +47,23 @@ OrganizationsController.get("/:id", async (req, res) => {
     }else {
       console.log("Organization not found")
       return;
+    }
+  } catch(e) {
+    console.log(e);
+    return;
+  }
+});
+
+
+OrganizationsController.post("/top", async (req, res) => {
+  console.log("Starting topping " + req.body.organizationId)
+    try {
+    const organization = await topOrganization(req.body.organizationId);
+
+    if(organization) {
+      return res.json({url: organization});
+    }else {
+      return res.status(403).send("Organization not found or already topped.");
     }
   } catch(e) {
     console.log(e);

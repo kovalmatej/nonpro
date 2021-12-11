@@ -1,6 +1,9 @@
 import { organizationSchema } from "../schemas/organization.js";
 
+import Stripe from "stripe";
+
 import { pool } from "../db.js";
+import { query } from "express";
 
 const duplicationErrors = [
   "Organizácia pod týmto menom už existuje.",
@@ -54,4 +57,36 @@ export const getOrganization = async (id) => {
   const select = await pool.query(`SELECT * FROM organizations WHERE id=${id}`);
 
   return select.rows[0];
+};
+
+export const topOrganization = async (id) => {
+  const findTopDuplicate = await pool.query(`SELECT id from sponsored WHERE organization_id='${ id }'`)
+
+  // Check duplication in DB
+  if(findTopDuplicate.rows.length !== 0) {
+    return undefined;
+  }
+  const stripe = Stripe('sk_test_51K5YQoHJaurUFnL9Ffyshyqh9IclwZQcAXTFB1VSgrz1xHdSqRG4igugS9RmjXh2IfjwzftnTY41iskJ3oU8yKMF00BZPXOkaa');
+
+  const session = await stripe.checkout.sessions.create({
+    line_items: [
+      {
+        // Provide the exact Price ID (for example, pr_1234) of the product you want to sell
+        price: 'price_1K5Z8QHJaurUFnL9JedaqEU6',
+        quantity: 1,
+      },
+    ],
+    mode: 'payment',
+    success_url: `http://localhost:3000/users`,
+    cancel_url: `http://localhost:3000/`,
+  });
+
+  const today = new Date();
+  let nextWeek = new Date();
+  
+  nextWeek.setDate(today.getDate() + 7);
+
+  const insert = await pool.query(`INSERT INTO sponsored(organization_id, date) VALUES('${ id }', '${ nextWeek.toDateString() }')`);
+    
+  return session.url;
 };
