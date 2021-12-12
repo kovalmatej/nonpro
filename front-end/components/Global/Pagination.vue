@@ -7,12 +7,8 @@
     >Predošlá</div>
 
     <div 
-      :key="i" 
-      v-for="i in numberOfPages" 
-      class="item block"
-      :class="[currentPage === i - 1 ? 'active' : '', currentPage < 12 ? ( i > 12 ? 'hidden' : '') : ( (Math.abs(currentPage - i) > 5 ) ? 'hidden' : '')]"
-      @click="changeToPage(i - 1)"
-    >{{ i }}</div>
+      class="item block active"
+    >{{ currentPage }}</div>
 
     <div 
       :class="[currentPage !== numberOfPages - 1 ? '' : 'disabled']" 

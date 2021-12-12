@@ -63,4 +63,13 @@ export default {
   margin-top: 3em
   min-height: calc(100vh - 13em)
   align-items: flex-start
+
+@media only screen and (max-width: 1400px)
+  .wrap
+    flex-direction: column
+
+@media only screen and (max-width: 700px)
+  .wrap
+    width: 97%
+    overflow: hidden
 </style>

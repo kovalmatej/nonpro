@@ -20,8 +20,12 @@ export default {
 
 <style lang="sass" scoped>
 .block.similar-organizations
-  flex: 1
+  flex: 4
   flex-direction: column
   gap: 1.5rem
   padding: 1rem
+
+@media only screen and (max-width: 1400px)
+  .block.similar-organizations
+    width: 95%
 </style>

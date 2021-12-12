@@ -106,4 +106,14 @@ export default {
   padding: 4em 4em 0.5em 4em
 .after-title
   margin-top: 5rem
+
+@media only screen and (max-width: 1465px)
+  .question-form 
+    width: 90%
+
+@media only screen and (max-width: 700px)
+  .question-form 
+    h1
+      font-size: 2.6rem
+
 </style>

@@ -92,4 +92,10 @@ export default {
   display: flex
   flex-direction: column
   gap: 2rem
+
+
+@media only screen and (max-width: 1400px)
+  .list
+    flex: 1
+    width: 90%
 </style>

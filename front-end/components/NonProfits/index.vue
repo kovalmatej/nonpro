@@ -45,4 +45,21 @@ export default {
   gap: 3em
   margin-top: 3em
   align-items: flex-start
+
+@media only screen and (max-width: 1400px)
+  .wrap
+    flex-direction: column
+  .col
+    flex-direction: row
+    flex: 1
+    width: 100%
+
+@media only screen and (max-width: 1000px)
+  .col
+    flex-direction: column
+    width: auto
+  .wrap
+    align-items: center
+
+
 </style>

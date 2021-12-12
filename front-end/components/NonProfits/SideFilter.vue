@@ -11,5 +11,7 @@ export default {
 </script>
 
 <style lang="sass" scoped>
-
+.filter
+  display: flex
+  flex: 1
 </style>

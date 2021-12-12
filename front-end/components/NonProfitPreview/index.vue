@@ -56,4 +56,10 @@ export default {
     color: $darkPurple
     text-transform: uppercase
     font-weight: bold
+
+
+@media only screen and (max-width: 1000px)
+  .preview-bottom
+    margin-top: 2rem
+
 </style>

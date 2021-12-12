@@ -20,6 +20,7 @@ export default {
 .block
   display: flex
   flex-direction: column
+  flex: 1
 
 .container
   position: relative

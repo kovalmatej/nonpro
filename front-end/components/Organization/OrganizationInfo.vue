@@ -111,7 +111,7 @@ export default {
 
 <style lang="sass" scoped>
 .organization-info
-  flex: 2
+  flex: 5
   flex-direction: column
 
 .ico
@@ -146,4 +146,23 @@ export default {
 .actions
   display: flex
   gap: 1rem
+
+@media only screen and (max-width: 1400px)
+  .organization-info
+    width: 90%
+  .table
+    width: 100%
+
+@media only screen and (max-width: 700px)
+  .block.organization-info
+    padding: 1rem
+    width: 95%
+  .actions
+    display: flex
+    flex-direction: column
+    gap: 1.5rem
+    margin-top: 5rem
+    button
+      margin: 0
+
 </style>
