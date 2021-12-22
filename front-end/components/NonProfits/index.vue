@@ -2,8 +2,8 @@
 	<div class="nonprofit-section">
 		<div class="wrap">
 			<div class="col">
-				<search />
-				<side-filter />
+				<search :organizations="organizations" />
+				<side-filter :organizations="organizations" />
 			</div>
 			
 			<list />
@@ -15,6 +15,9 @@
 import SideFilter from './SideFilter.vue'
 import List from "./List.vue"
 import Search from './Search.vue'
+
+import axios from "axios"
+import organizations from '../../organizationsData'
 
 export default {
   components: {
@@ -28,7 +31,28 @@ export default {
 			type: Boolean,
 			default: false
 		}
-	}
+	},
+  data(){
+    return {
+      organizations: [],
+      cities: []
+    }
+  },
+  async created() {
+    axios.get("http://localhost:5000/organizations/getAll")
+      .then(res => {
+          this.organizations = res.data;
+
+          for(let org of this.organizations) {
+            if(this.cities.includes(org.city) === false) {
+              console.log(org.city)
+              this.cities.push(org.city);
+            }
+          }
+
+          console.log(this.cities)
+      })
+  }
 }
 </script>
 
