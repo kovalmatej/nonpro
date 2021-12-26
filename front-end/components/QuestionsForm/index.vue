@@ -1,17 +1,18 @@
 <template>
 	<div class="form-section">
 		<div class="wrap question-form">
-			<progress-bar :max="questions.length" :currentProgress="currentQuestion" />
+			<progress-bar :max="questions.length" :currentProgress="isFinished ? questions.length : currentQuestion" />
 
 			<div class="form-content">
-				<h2>Otázka č.{{ currentQuestion + 1 }}</h2>
-				<h1>{{ questions[currentQuestion].title }}</h1>
+				<h2 v-show="!isFinished">Otázka č.{{ currentQuestion + 1 }}</h2>
+				<h1 v-show="!isFinished">{{ questions[currentQuestion].title }}</h1>
+				<h1 class="after-title" v-show="isFinished">Ďakujeme,<br />vaše odpovede analyzujeme <br /> :)</h1>
 
-				<div class="form-data">
+				<div v-show="!isFinished" class="form-data">
 					<form-options :options="questions[currentQuestion].options" @optionClicked="optionClicked" />
 				</div>
 
-				<p>
+				<p v-show="!isFinished">
 					Po vyplnení krátkeho dotáznika vám navrhneme zoznam neziskových organizácií, ktoré by vás mohli zaujímať.
 				</p>
 			</div>
@@ -20,8 +21,10 @@
 </template>
 
 <script>
+import axios from "axios";
 import FormOption from './FormOption.vue'
 import FormOptions from './FormOptions.vue'
+import { mapGetters } from "vuex";
 
 import questions from "../../rawData"
 import ChangeQuestionArrow from './ChangeQuestionArrow.vue'
@@ -37,16 +40,32 @@ export default {
 	},
 	data() {
 		return {
-			currentQuestion: 0
+			currentQuestion: 0,
+			answers: [],
+			isFinished: false
 		}
 	},
 	methods: {
+		...mapGetters(["getUsername"]),
 		optionClicked(id) {
+			this.answers.push({question: this.currentQuestion, answer: id});
 			this.nextQuestion()
 		},
 		nextQuestion() {
-			console.log("Next");
-			this.currentQuestion = this.currentQuestion + 1;
+			if(this.currentQuestion == this.questions.length - 1) {
+				console.log(this.getUsername())
+				axios.post("http://localhost:5000/questions/send", {
+					username: this.getUsername(),
+					answers: JSON.stringify(this.answers)
+				})
+				.then(res => {
+					if(res.data === "ok") {
+						this.isFinished = true;
+					}
+				});
+			} else {
+				this.currentQuestion = this.currentQuestion + 1;
+			}
 		}
 	}
 }
@@ -85,4 +104,16 @@ export default {
   justify-content: center
 .form-content
   padding: 4em 4em 0.5em 4em
+.after-title
+  margin-top: 5rem
+
+@media only screen and (max-width: 1465px)
+  .question-form 
+    width: 90%
+
+@media only screen and (max-width: 700px)
+  .question-form 
+    h1
+      font-size: 2.6rem
+
 </style>

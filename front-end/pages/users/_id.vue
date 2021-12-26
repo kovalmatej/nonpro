@@ -1,27 +1,31 @@
 <template>
   <div>
-    <QuestionsForm v-if="showForm" />
-    <Hero v-else />
-		<AboutUs v-if="!showForm" />
-		<Footer />
+    <User />
+    <Footer />
   </div>
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters } from "vuex"
+
+import axios from "axios";
 
 export default {
   layout: "clasic",
   data() {
     return {
-      showForm: false
+      isLogged: false
     }
   },
   methods: {
     ...mapGetters(["getIsLogged"])
-  },async created() {
+  },
+  async created() {
     const logged = await this.getIsLogged();
-    this.showForm = logged;
-  }
+
+    if(!logged) {
+      this.$router.push("/");
+    }
+  },
 }
 </script>
