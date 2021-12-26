@@ -1,7 +1,7 @@
 import express from "express";
 
 // Service
-import { createOrganization, getAllOrganizations, getOrganization, topOrganization } from "../services/OrganizationsService.js";
+import { createOrganization, getAllOrganizations, getOrganization, topOrganization, getNaces, getNaceByIco } from "../services/OrganizationsService.js";
 
 export const OrganizationsController = express.Router();
 
@@ -21,7 +21,6 @@ OrganizationsController.post("/add", async (req, res) => {
   }
 });
 
-
 OrganizationsController.get("/getAll", async (req, res) => {
   try {
     const organizations = await getAllOrganizations();
@@ -30,6 +29,40 @@ OrganizationsController.get("/getAll", async (req, res) => {
       return res.json(organizations);
     }else {
       console.log("Error while fetching organizations")
+      return;
+    }
+  } catch(e) {
+    console.log(e);
+    return;
+  }
+});
+
+OrganizationsController.get("/naces", async (req, res) => {
+  try {
+    const naces = await getNaces();
+
+    if(naces) {
+      return res.json(naces);
+    }else {
+      console.log("Error while fetching naces")
+      return;
+    }
+  } catch(e) {
+    console.log(e);
+    return;
+  }
+});
+
+OrganizationsController.get("/:ico/nace", async (req, res) => {
+  try {
+    const nace = await getNaceByIco(req.params.ico);
+    
+    console.log(nace)
+    if(nace) {
+      
+      return res.json(nace);
+    }else {
+      console.log("Error while fetching nace")
       return;
     }
   } catch(e) {
@@ -53,6 +86,7 @@ OrganizationsController.get("/:id", async (req, res) => {
     return;
   }
 });
+
 
 
 OrganizationsController.post("/top", async (req, res) => {

@@ -48,13 +48,13 @@ export const createOrganization = async ({title, ico, city, street, psc, pravna_
 
 
 export const getAllOrganizations = async () => {
-  const select = await pool.query(`SELECT * FROM organizations`);
+  const select = await pool.query(`SELECT organizations.*, ico_nace.nace as nace_code, nace.type as type  FROM organizations INNER JOIN ico_nace ON organizations.ico=ico_nace.ico INNER JOIN nace ON ico_nace.nace=nace.nace ORDER BY organizations.id ASC`);
 
   return select.rows;
 };
 
 export const getOrganization = async (id) => {
-  const select = await pool.query(`SELECT * FROM organizations WHERE id=${id}`);
+  const select = await pool.query(`SELECT organizations.*, ico_nace.nace as nace_code, nace.type as type FROM organizations INNER JOIN ico_nace ON organizations.ico=ico_nace.ico INNER JOIN nace ON ico_nace.nace=nace.nace WHERE organizations.id=${id}`);
 
   return select.rows[0];
 };
@@ -89,4 +89,16 @@ export const topOrganization = async (id) => {
   const insert = await pool.query(`INSERT INTO sponsored(organization_id, date) VALUES('${ id }', '${ nextWeek.toDateString() }')`);
     
   return session.url;
+};
+
+export const getNaces = async () => {
+  const select = await pool.query(`SELECT nace, type FROM nace`);
+
+  return select.rows;
+}
+
+export const getNaceByIco = async (ico) => {
+  const select = await pool.query(`SELECT nace.nace, type FROM nace INNER JOIN ico_nace ON nace.nace = ico_nace.nace WHERE ico_nace.ico='${ ico }'`);
+
+  return select.rows[0]
 };

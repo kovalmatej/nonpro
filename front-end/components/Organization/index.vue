@@ -10,6 +10,7 @@
       :type="organization.pravna_forma || ''"
       :category="organization.category || ''"
       :IBAN="organization.iban || ''"
+      :nace="organization.type || ''"
     />
     <SimilarOrganizations />
 	</div>
@@ -35,6 +36,7 @@ export default {
     return {
       organization: {},
       loading: true,
+      nace: ""
     }
   },
   props: {
@@ -44,11 +46,12 @@ export default {
     }
   },
   methods: {
-    fetchOrganizationData() {
-      axios.get(`http://localhost:5000/organizations/${this.$route.params.id}`)
+    async fetchOrganizationData() {
+      await axios.get(`http://localhost:5000/organizations/${this.$route.params.id}`)
         .then(res => {
           this.organization = res.data;
       });
+
       this.loading = false;
     }
   }

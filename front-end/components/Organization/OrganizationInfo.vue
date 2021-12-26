@@ -26,7 +26,7 @@
       
       <div class="row">
         <div class="left cell">Zameranie</div>
-        <div class="right cell">{{ category }}</div>
+        <div class="right cell">{{ nace }}</div>
       </div>
       
       <div class="row">
@@ -97,6 +97,10 @@ export default {
       required: true
     },
     IBAN: {
+      type: String,
+      required: true
+    },
+    nace: {
       type: String,
       required: true
     },

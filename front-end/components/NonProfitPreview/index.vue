@@ -13,6 +13,8 @@
 
 <script>
 import GlobalButton from '../Global/GlobalButton.vue'
+import axios from "axios"
+
 export default {
   components: { GlobalButton },
 	name: "NonProfitPreview",
@@ -32,6 +34,10 @@ export default {
 		city: {
 			type: String | Number,
 			required: true
+		},
+		nace: {
+			type: String | null,
+			requied: true
 		}
 	}
 }

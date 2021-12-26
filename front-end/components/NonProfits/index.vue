@@ -3,10 +3,10 @@
 		<div class="wrap">
 			<div class="col">
 				<search :organizations="organizations" />
-				<side-filter :organizations="organizations" />
+				<side-filter :organizations="organizations" @nacefilter="nacefilter" @formafilter="formafilter" />
 			</div>
 			
-			<list />
+			<list :naceFilter="naceFilter" :formaFilter="formaFilter" />
 		</div>
 	</div>
 </template>
@@ -35,7 +35,8 @@ export default {
   data(){
     return {
       organizations: [],
-      cities: []
+      naceFilter: [],
+      formaFilter: [],
     }
   },
   async created() {
@@ -43,15 +44,15 @@ export default {
       .then(res => {
           this.organizations = res.data;
 
-          for(let org of this.organizations) {
-            if(this.cities.includes(org.city) === false) {
-              console.log(org.city)
-              this.cities.push(org.city);
-            }
-          }
-
-          console.log(this.cities)
       })
+  },
+  methods: {
+    nacefilter(naceFilter) {
+      this.naceFilter = naceFilter;
+    },
+    formafilter(formaFilter) {
+      this.formaFilter = formaFilter;
+    }
   }
 }
 </script>

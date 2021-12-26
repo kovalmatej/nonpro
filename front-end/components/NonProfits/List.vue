@@ -6,10 +6,11 @@
 			<non-profit-preview 
 				:key="i"
 				v-for="(organization, i) in filteredOrganizations"
-				:title="organization.title" 
-				:id="organization.id"
-				:city="organization.city"
-				:ICO="organization.ico"
+				:title="organization.title || ''" 
+				:id="organization.id || ''"
+				:city="organization.city || ''"
+				:ICO="organization.ico || ''"
+				:nace="organization.type || ''"
 			/>
 
 			<pagination 
@@ -32,27 +33,60 @@ export default {
 		NonProftiPreview,
 		Pagination
 	},
+	props: {
+		naceFilter: Array,
+		formaFilter: Array
+	},
 	data() {
 		return {
 			currentPage: 0,
 			displayItems: 5,
-			organizations: [],
+			organizations: []
 		}
 	},
-	created() {
-		this.fetchOrganizations();
+	async created() {
+		await this.fetchOrganizations();
 	},
 	computed: {
 		filteredOrganizations() {
-			let newOrganizations = this.organizations.filter(
-				(org, i) => { 
-					if(i >= this.indexToDisplayFrom && i < this.maxIndexToDisplayFrom) {
-						return org;
-					}
-				}
-			);
+			let j = 0, k = 0;
 
-			return newOrganizations;
+			let filtered = [];
+
+			console.log(this.formaFilter + " bebe")
+
+			if(this.organizations.length > 0) {
+				while(j < 5) {	
+					if(this.naceFilter.length > 0) {
+						if(this.naceFilter.includes(this.organizations[this.indexToDisplayFrom + k].nace_code)) {
+							if(this.formaFilter.length > 0) {
+								
+								if(this.formaFilter.includes(this.organizations[this.indexToDisplayFrom + k].pravna_forma)) {
+									filtered.push(this.organizations[this.indexToDisplayFrom + k]);
+									j++;
+								}
+							} else {
+								filtered.push(this.organizations[this.indexToDisplayFrom + k]);
+								j++;
+							}
+						}
+					}else {
+						if(this.formaFilter.length > 0) {
+							if(this.formaFilter.includes(this.organizations[this.indexToDisplayFrom + k].pravna_forma)) {
+								filtered.push(this.organizations[this.indexToDisplayFrom + k]);
+								j++;
+							}
+						}else {
+							filtered.push(this.organizations[this.indexToDisplayFrom + k]);
+							j++;
+						}
+					}
+
+					k++;
+				}
+			}
+
+			return filtered;
 		},
 		numberOfOrganizations() {
 			return this.organizations.length + 1;
@@ -71,8 +105,8 @@ export default {
 		changeCurrentPage(i) {
 			this.currentPage = i;
 		},
-		fetchOrganizations() {
-			axios.get("http://localhost:5000/organizations/getAll")
+		async fetchOrganizations() {
+			await axios.get("http://localhost:5000/organizations/getAll")
 				.then(res => {
 						this.organizations = res.data;
 				})
