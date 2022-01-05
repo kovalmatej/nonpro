@@ -39,3 +39,13 @@ export const loginUser = async ({ username, password }) => {
 
   return { notFound: 'Používateľ s touto kombináciou mena a hesla nebol nájdený.'};
 };
+
+export const getId = async (username) => {
+  const select = await pool.query(`SELECT id FROM users WHERE username='${ username }'`);
+ 
+  if(!select.rows) {
+    return undefined;
+  }
+
+  return select.rows[0];
+};

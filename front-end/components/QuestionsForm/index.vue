@@ -49,11 +49,11 @@ export default {
 		...mapGetters(["getUsername"]),
 		optionClicked(id) {
 			this.answers.push({question: this.currentQuestion, answer: id});
-			this.nextQuestion()
+			this.nextQuestion();
+			console.log(this.answers);
 		},
 		nextQuestion() {
 			if(this.currentQuestion == this.questions.length - 1) {
-				console.log(this.getUsername())
 				axios.post("http://localhost:5000/questions/send", {
 					username: this.getUsername(),
 					answers: JSON.stringify(this.answers)

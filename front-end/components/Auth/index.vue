@@ -133,6 +133,8 @@ export default {
 .container
   display: flex
   justify-content: center
+  align-items: flex-start
+  min-height: calc(100vh - 10rem)
 
 .auth-form.block
   display: flex

@@ -1,7 +1,7 @@
 import express from "express";
 
 // Service
-import { createOrganization, getAllOrganizations, getOrganization, topOrganization, getNaces, getNaceByIco } from "../services/OrganizationsService.js";
+import { createOrganization, getAllOrganizations, getOrganization, topOrganization, getNaces, getNaceByIco, getRecommendedOrganizations, getOwnedOrganizations } from "../services/OrganizationsService.js";
 
 export const OrganizationsController = express.Router();
 
@@ -36,6 +36,27 @@ OrganizationsController.get("/getAll", async (req, res) => {
     return;
   }
 });
+
+OrganizationsController.get("/owned/:username", async (req, res) => {
+  try {
+    if(req.params.username) {
+      const organizations = await getOwnedOrganizations(req.params.username);
+   
+      if(organizations) {
+        return res.json(organizations);
+      }else {
+        console.log("Error while fetching organizations")
+        return;
+      } 
+   } else {
+     res.status(400);
+   }
+  } catch(e) {
+    console.log(e);
+    return;
+  }
+});
+
 
 OrganizationsController.get("/naces", async (req, res) => {
   try {
@@ -90,7 +111,6 @@ OrganizationsController.get("/:id", async (req, res) => {
 
 
 OrganizationsController.post("/top", async (req, res) => {
-  console.log("Starting topping " + req.body.organizationId)
     try {
     const organization = await topOrganization(req.body.organizationId);
 
@@ -104,3 +124,40 @@ OrganizationsController.post("/top", async (req, res) => {
     return;
   }
 });
+
+OrganizationsController.get("/:userId/recommended", async (req, res) => {
+  try {
+    const organizations = await getRecommendedOrganizations(req.params.userId);
+
+    if(organizations) {
+      return res.json(organizations);
+    }else {
+      console.log("Organization not found")
+      return;
+    }
+  } catch(e) {
+    console.log(e);
+    return;
+  }
+});
+
+
+/*OrganizationsController.get("/own", async (req, res) => {
+  console.log(req.body)
+  try {
+    if(req.body.username) {
+      const organizations = await getOwnedOrganizations(req.body.username);
+
+      if(organizations) {
+        return res.status(200).json(organizations);
+      }else {
+        return res.status(500);
+      }
+    }else {
+      return res.status(400);
+    }
+  }catch(e) {
+    console.log(e);
+    return;
+  }
+});*/

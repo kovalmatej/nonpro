@@ -6,9 +6,6 @@ import { sendAnswers } from "../services/QuestionsService.js";
 export const QuestionsController = express.Router();
 
 QuestionsController.post("/send", async (req, res) => {
-  console.log("Received answers " + req.body.username);
-  console.log("Received answers"  + req.body.answers);
-
   try {
     if(req.body.answers && req.body.username) {
       const errors = await sendAnswers(req.body.answers, req.body.username);

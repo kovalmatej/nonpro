@@ -8,10 +8,9 @@
 					<h2>Topovanie organizácie</h2>
 					<p>Pre zviditeľnenie organizácie môžeš využiť funkciu topovania, ktora zvýrazni tvoju organizáciu pre všetkých návštevnikov.<br>Platba prebieha cez platobnú bránu Stripe</p>
 
-					<select>
-						<option selected disabled>Vyber svoju organizáciu</option>
-						<option value="1">Alexsma</option>
-						<option value="2">Nádej pre Damiánka</option>
+					<select v-if="options" v-model="selectedOrg">
+						<option value="Vyber si svoju organizáciu" selected disabled>Vyber svoju organizáciu</option>
+						<option :key="org.id" v-for="org in options" :value="org.id">{{ org.title }}</option>
 					</select>
 				
 					<global-button
@@ -101,6 +100,8 @@ export default {
 	data() {
 		return {
 			window: null,
+			options: [],
+			selectedOrg: "Vyber si svoju organizáciu"
 		}
 	},
 	beforeMount() {
@@ -109,12 +110,21 @@ export default {
 	methods: {
 		...mapGetters(["getUsername"]),
 		async topOrganization() {
-			const res = await axios.post("http://localhost:5000/organizations/top", {
-				organizationId: 46397
-			})
+			if(this.selectedOrg != "Vyber si svoju organizáciu"){
+				const res = await axios.post("http://localhost:5000/organizations/top", {
+					organizationId: this.selectedOrg
+				})
 
-			this.window.location.replace(res.data.url)
+				this.window.location.replace(res.data.url)
+			}
 		}
+	},
+	async created() {
+		await axios.get(`http://localhost:5000/organizations/owned/${ this.getUsername() }`)
+			.then(res => {
+				this.options = res.data;
+				console.log(res.data[0]);			
+			});
 	}
 }
 </script>

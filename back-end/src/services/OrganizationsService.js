@@ -77,8 +77,8 @@ export const topOrganization = async (id) => {
       },
     ],
     mode: 'payment',
-    success_url: `http://localhost:3000/users`,
-    cancel_url: `http://localhost:3000/`,
+    success_url: `http://localhost:3000/organizacie/success`,
+    cancel_url: `http://localhost:3000/organizacie/error`,
   });
 
   const today = new Date();
@@ -101,4 +101,27 @@ export const getNaceByIco = async (ico) => {
   const select = await pool.query(`SELECT nace.nace, type FROM nace INNER JOIN ico_nace ON nace.nace = ico_nace.nace WHERE ico_nace.ico='${ ico }'`);
 
   return select.rows[0]
+};
+
+export const getRecommendedOrganizations = async (id) => {
+  const select = await pool.query(`
+  SELECT organizations.*, (nace_properties.zvierata * user_properties.zvierata + nace_properties.introvertnost * user_properties.introvertnost + nace_properties.vzdelavanie * user_properties.vzdelavanie + nace_properties.ludia * user_properties.ludia + nace_properties.hudba * user_properties.hudba + nace_properties.umenie * user_properties.umenie + nace_properties.investovanie * user_properties.investovanie + nace_properties.vozidlo * user_properties.vozidlo + nace_properties.mesto * user_properties.bydlisko + nace_properties.dobrovolnictvo * user_properties.dobrovolnictvo + nace_properties.nabozenstvo * user_properties.nabozenstvo + nace_properties.manualna_praca * user_properties.praca + nace_properties.varenie * user_properties.varenie + nace_properties.sport * user_properties.sport + nace_properties.surodenci * user_properties.surodenci + nace_properties.cestovanie * user_properties.cestovanie + nace_properties.jazyky * user_properties.jazyky + nace_properties.rastliny * user_properties.rastliny + nace_properties.jedlo * user_properties.jedlo + nace_properties.politika * user_properties.politika) as rating FROM organizations 
+    INNER JOIN ico_nace ON ico_nace.ico = organizations.ico
+    INNER JOIN nace ON nace.nace = ico_nace.nace
+    INNER JOIN nace_properties ON nace_properties.nace_id = nace.id 
+    JOIN user_properties ON user_properties.user_id=${ id }
+    ORDER BY rating DESC
+    LIMIT 100
+    `)
+  
+  return select.rows;
+};
+
+export const getOwnedOrganizations = async (username) => {
+  const select = await pool.query(`SELECT organizations.* FROM organizations WHERE organizations.owner=(SELECT users.id FROM users WHERE users.username='${ username }')`);
+
+  if(select) {
+    return select.rows;
+  }
+  return undefined
 };
