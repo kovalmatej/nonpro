@@ -1,7 +1,7 @@
 import express from "express";
 
 // Service
-import { createOrganization, getAllOrganizations, getOrganization, topOrganization, getNaces, getNaceByIco, getRecommendedOrganizations, getOwnedOrganizations } from "../services/OrganizationsService.js";
+import { getSponsoredOrganizations, updateVisited, getVisitedProperties, createOrganization, getAllOrganizations, getOrganization, topOrganization, getNaces, getNaceByIco, getRecommendedOrganizations, getOwnedOrganizations } from "../services/OrganizationsService.js";
 
 export const OrganizationsController = express.Router();
 
@@ -36,6 +36,23 @@ OrganizationsController.get("/getAll", async (req, res) => {
     return;
   }
 });
+
+OrganizationsController.get("/sponsored", async (req, res) => {
+  try {
+    const sponsored = await getSponsoredOrganizations();
+
+    if(sponsored) {
+      return res.json(sponsored);
+    }else {
+      console.log("Error while fetching naces")
+      return;
+    }
+  } catch(e) {
+    console.log(e);
+    return;
+  }
+});
+
 
 OrganizationsController.get("/owned/:username", async (req, res) => {
   try {
@@ -142,22 +159,49 @@ OrganizationsController.get("/:userId/recommended", async (req, res) => {
 });
 
 
-/*OrganizationsController.get("/own", async (req, res) => {
-  console.log(req.body)
+OrganizationsController.get("/:username/recommended/username", async (req, res) => {
   try {
-    if(req.body.username) {
-      const organizations = await getOwnedOrganizations(req.body.username);
+    const organizations = await getRecommendedOrganizations(req.params.username, 1);
 
-      if(organizations) {
-        return res.status(200).json(organizations);
-      }else {
-        return res.status(500);
-      }
+    if(organizations) {
+      return res.json(organizations);
     }else {
-      return res.status(400);
+      console.log("Organization not found")
+      return;
     }
-  }catch(e) {
+  } catch(e) {
     console.log(e);
     return;
   }
-});*/
+});
+
+OrganizationsController.get("/:userId/visitedproperties", async (req, res) => {
+  try {
+    const properties = await getVisitedProperties(req.params.userId);
+
+    if(properties) {
+      return res.json(properties);
+    }else {
+      console.log("Properties not found")
+      return;
+    }
+  } catch(e) {
+    console.log(e);
+    return;
+  }
+});
+
+OrganizationsController.post("/:userId/:naceId", async (req, res) => {
+  try {
+    const visited = await updateVisited(req.params.userId, req.params.naceId);
+
+    if(visited) {
+      return res.json("Updated successfuly");
+    }else {
+      return res.status(403).send("Organization not found or already topped.");
+    }
+  } catch(e) {
+    console.log(e);
+    return;
+  }
+});
