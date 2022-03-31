@@ -2,7 +2,7 @@
 	<a :href="`${this.id}`" class="link-container">
 		<div class="preview small-block">
 			<h2>{{ title }}</h2>
-			<h3>IČO: 30686661 | Košice</h3>
+			<h3>IČO: {{ ico }} | {{ city }}</h3>
 
 			<div class="preview-bottom">
 				<a href="#" class="purple">Viac informácií</a>
@@ -22,6 +22,14 @@ export default {
 			required: true
 		},
 		title: {
+			type: String,
+			required: true
+		},
+		ico: {
+			type: String,
+			required: true
+		},
+		city: {
 			type: String,
 			required: true
 		}

@@ -180,3 +180,28 @@ export const getSponsoredOrganizations = async () => {
 
   return null;
 };
+
+export const getSimilarByIco = async (ico) => {
+  const select = await pool.query(`
+    SELECT organizations.* 
+      FROM organizations 
+      WHERE organizations.ico IN 
+      (SELECT ico 
+        FROM ico_nace 
+        WHERE nace=
+          (SELECT ico_nace.nace 
+            FROM ico_nace 
+            WHERE ico_nace.ico='${ ico }'
+          )
+      )
+    ORDER BY random()
+    LIMIT 4
+    ;
+  `);
+
+  if(select.rows.length > 0) {
+    return select.rows;
+  }
+
+  return null;
+};

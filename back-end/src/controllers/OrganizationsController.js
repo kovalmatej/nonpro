@@ -1,7 +1,7 @@
 import express from "express";
 
 // Service
-import { getSponsoredOrganizations, updateVisited, getVisitedProperties, createOrganization, getAllOrganizations, getOrganization, topOrganization, getNaces, getNaceByIco, getRecommendedOrganizations, getOwnedOrganizations } from "../services/OrganizationsService.js";
+import { getSimilarByIco, getSponsoredOrganizations, updateVisited, getVisitedProperties, createOrganization, getAllOrganizations, getOrganization, topOrganization, getNaces, getNaceByIco, getRecommendedOrganizations, getOwnedOrganizations } from "../services/OrganizationsService.js";
 
 export const OrganizationsController = express.Router();
 
@@ -101,6 +101,23 @@ OrganizationsController.get("/:ico/nace", async (req, res) => {
       return res.json(nace);
     }else {
       console.log("Error while fetching nace")
+      return;
+    }
+  } catch(e) {
+    console.log(e);
+    return;
+  }
+});
+
+OrganizationsController.get("/:ico/nace/similar", async (req, res) => {
+  console.log
+  try {
+    const similar = await getSimilarByIco(req.params.ico);
+    
+    if(similar) {
+      return res.json(similar);
+    }else {
+      console.log("Error while fetching organizations")
       return;
     }
   } catch(e) {

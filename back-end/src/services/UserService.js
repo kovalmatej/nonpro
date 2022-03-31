@@ -52,7 +52,7 @@ export const getId = async (username) => {
 
 export const getAnswersStatus = async (username) => {
   const select = await pool.query(`SELECT answers.id FROM answers WHERE answers.user_id=(SELECT users.id FROM users where users.username='${ username }')`);
-
+  console.log(select)
   if(select.rows.length > 0) {
     return true;
   }

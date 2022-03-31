@@ -87,7 +87,7 @@ UserController.get("/:username/answered", async (req, res) => {
       if(answered) {
         return res.status(200).json({answered});
       }
-      return res.status(400).json({answered});
+      return res.json({answered});
     }
   }catch(e) {
     console.log(e);

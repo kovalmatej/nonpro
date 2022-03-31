@@ -28,7 +28,7 @@ export default {
 
     axios.get(`http://localhost:5000/user/${ this.getUsername() }/answered`)
       .then(res => {
-        console.log(res.data.answered)
+        console.log(res.data.answered + "answered")
         this.showRecommended = res.data.answered;
       });
   }

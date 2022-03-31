@@ -12,7 +12,7 @@
       :IBAN="organization.iban || ''"
       :nace="organization.type || ''"
     />
-    <SimilarOrganizations />
+    <SimilarOrganizations :ico="organization.ico" />
 	</div>
 </template>
 
