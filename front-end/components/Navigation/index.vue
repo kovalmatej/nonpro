@@ -20,18 +20,15 @@
 </template>
 
 <script>
-import { mapMutations } from "vuex"
+import { mapMutations, mapGetters } from "vuex"
+import axios from "axios";
 
 export default {
   name: "Navigation",
-  computed: {
-    userId() {
-      return 1;
-    }
-  },
   data(){
     return {
-      openNav: false
+      openNav: false,
+      userId: null
     }
   },
   props: {
@@ -42,6 +39,7 @@ export default {
   },
   methods: {
     ...mapMutations(["setToken", "setUsername"]),
+    ...mapGetters(["getUsername"]),
     logout() {
       this.setToken(null);
       this.setUsername(null);
@@ -51,6 +49,13 @@ export default {
     toggleNav() {
       this.openNav = !this.openNav;
     }
+  },
+  async created() {
+    axios.get(`http://localhost:5000/user/id/${ this.getUsername() }`)
+      .then(res => {
+        this.userId = res.data.id;
+        console.log(res)
+      });
   }
 }
 </script>

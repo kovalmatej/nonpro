@@ -1,6 +1,6 @@
 <template>
 	<div class="form-section">
-		<div class="wrap question-form">
+		<div class="wrap question-form" v-if="!showRecommended">
 			<progress-bar :max="questions.length" :currentProgress="isFinished ? questions.length : currentQuestion" />
 
 			<div class="form-content">
@@ -17,6 +17,12 @@
 				</p>
 			</div>
 		</div>
+
+		<div class="container" v-else >
+			<Recommended />
+			<Sponsored />
+		</div>
+		
 	</div>
 </template>
 
@@ -25,13 +31,15 @@ import axios from "axios";
 import FormOption from './FormOption.vue'
 import FormOptions from './FormOptions.vue'
 import { mapGetters } from "vuex";
+import Recommended from "../Recommended"
+import Sponsored from "../Sponsored"
 
 import questions from "../../rawData"
 import ChangeQuestionArrow from './ChangeQuestionArrow.vue'
 import ProgressBar from './ProgressBar.vue'
 
 export default {
-  components: { FormOption, FormOptions, ChangeQuestionArrow, ProgressBar },
+  components: { FormOption, FormOptions, ChangeQuestionArrow, ProgressBar, Recommended },
 	name: "QuestionsForm",
 	computed: {
 		questions() {
@@ -45,15 +53,21 @@ export default {
 			isFinished: false
 		}
 	},
+	props: {
+		showRecommended: {
+			type: Boolean,
+			default: true
+		}
+	},
 	methods: {
 		...mapGetters(["getUsername"]),
 		optionClicked(id) {
 			this.answers.push({question: this.currentQuestion, answer: id});
-			this.nextQuestion()
+			this.nextQuestion();
+			console.log(this.answers);
 		},
 		nextQuestion() {
 			if(this.currentQuestion == this.questions.length - 1) {
-				console.log(this.getUsername())
 				axios.post("http://localhost:5000/questions/send", {
 					username: this.getUsername(),
 					answers: JSON.stringify(this.answers)
@@ -75,6 +89,8 @@ export default {
 .form-section
   margin-bottom: 1em
   min-height: calc(100vh - 9em)
+  display: flex
+  justify-content: center
 .question-form
   width: 60%
   min-height: 40em
@@ -106,6 +122,12 @@ export default {
   padding: 4em 4em 0.5em 4em
 .after-title
   margin-top: 5rem
+
+.container
+  display: flex
+  width: 90%
+  gap: 4rem
+  align-items: flex-start
 
 @media only screen and (max-width: 1465px)
   .question-form 

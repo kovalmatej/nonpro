@@ -4,7 +4,7 @@ import axios from "axios";
 import jwt from "jsonwebtoken";
 
 //Service
-import { createUser, loginUser } from "../services/UserService.js";
+import { createUser, loginUser, getId, getAnswersStatus } from "../services/UserService.js";
 
 export const UserController = express.Router();
 
@@ -50,6 +50,44 @@ UserController.post("/login", async (req, res) => {
       });
     }else {
       return res.json(errors);
+    }
+  }catch(e) {
+    console.log(e);
+    return;
+  }
+});
+
+UserController.get("/id/:username", async (req, res) => {
+  try {
+    if(req.params.username) {
+      const id = await getId(req.params.username);
+
+      if(id) {
+        console.log(id)
+        return res.status(200).json(id);
+      }else {
+        return res.status(500);
+      }
+    }else {
+      return res.status(400);
+    }
+  
+  }catch(e) {
+    console.log(e);
+    return;
+  }
+});
+
+UserController.get("/:username/answered", async (req, res) => {
+  console.log("test")
+  try {
+    if(req.params.username) {
+      const answered = await getAnswersStatus(req.params.username);
+
+      if(answered) {
+        return res.status(200).json({answered});
+      }
+      return res.json({answered});
     }
   }catch(e) {
     console.log(e);

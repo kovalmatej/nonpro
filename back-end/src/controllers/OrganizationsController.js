@@ -1,7 +1,7 @@
 import express from "express";
 
 // Service
-import { createOrganization, getAllOrganizations, getOrganization, topOrganization, getNaces, getNaceByIco } from "../services/OrganizationsService.js";
+import { getSimilarByIco, getSponsoredOrganizations, updateVisited, getVisitedProperties, createOrganization, getAllOrganizations, getOrganization, topOrganization, getNaces, getNaceByIco, getRecommendedOrganizations, getOwnedOrganizations } from "../services/OrganizationsService.js";
 
 export const OrganizationsController = express.Router();
 
@@ -37,6 +37,44 @@ OrganizationsController.get("/getAll", async (req, res) => {
   }
 });
 
+OrganizationsController.get("/sponsored", async (req, res) => {
+  try {
+    const sponsored = await getSponsoredOrganizations();
+
+    if(sponsored) {
+      return res.json(sponsored);
+    }else {
+      console.log("Error while fetching naces")
+      return;
+    }
+  } catch(e) {
+    console.log(e);
+    return;
+  }
+});
+
+
+OrganizationsController.get("/owned/:username", async (req, res) => {
+  try {
+    if(req.params.username) {
+      const organizations = await getOwnedOrganizations(req.params.username);
+   
+      if(organizations) {
+        return res.json(organizations);
+      }else {
+        console.log("Error while fetching organizations")
+        return;
+      } 
+   } else {
+     res.status(400);
+   }
+  } catch(e) {
+    console.log(e);
+    return;
+  }
+});
+
+
 OrganizationsController.get("/naces", async (req, res) => {
   try {
     const naces = await getNaces();
@@ -71,6 +109,23 @@ OrganizationsController.get("/:ico/nace", async (req, res) => {
   }
 });
 
+OrganizationsController.get("/:ico/nace/similar", async (req, res) => {
+  console.log
+  try {
+    const similar = await getSimilarByIco(req.params.ico);
+    
+    if(similar) {
+      return res.json(similar);
+    }else {
+      console.log("Error while fetching organizations")
+      return;
+    }
+  } catch(e) {
+    console.log(e);
+    return;
+  }
+});
+
 OrganizationsController.get("/:id", async (req, res) => {
     try {
     const organization = await getOrganization(req.params.id);
@@ -90,12 +145,75 @@ OrganizationsController.get("/:id", async (req, res) => {
 
 
 OrganizationsController.post("/top", async (req, res) => {
-  console.log("Starting topping " + req.body.organizationId)
     try {
     const organization = await topOrganization(req.body.organizationId);
 
     if(organization) {
       return res.json({url: organization});
+    }else {
+      return res.status(403).send("Organization not found or already topped.");
+    }
+  } catch(e) {
+    console.log(e);
+    return;
+  }
+});
+
+OrganizationsController.get("/:userId/recommended", async (req, res) => {
+  try {
+    const organizations = await getRecommendedOrganizations(req.params.userId);
+
+    if(organizations) {
+      return res.json(organizations);
+    }else {
+      console.log("Organization not found")
+      return;
+    }
+  } catch(e) {
+    console.log(e);
+    return;
+  }
+});
+
+
+OrganizationsController.get("/:username/recommended/username", async (req, res) => {
+  try {
+    const organizations = await getRecommendedOrganizations(req.params.username, 1);
+
+    if(organizations) {
+      return res.json(organizations);
+    }else {
+      console.log("Organization not found")
+      return;
+    }
+  } catch(e) {
+    console.log(e);
+    return;
+  }
+});
+
+OrganizationsController.get("/:userId/visitedproperties", async (req, res) => {
+  try {
+    const properties = await getVisitedProperties(req.params.userId);
+
+    if(properties) {
+      return res.json(properties);
+    }else {
+      console.log("Properties not found")
+      return;
+    }
+  } catch(e) {
+    console.log(e);
+    return;
+  }
+});
+
+OrganizationsController.post("/:userId/:naceId", async (req, res) => {
+  try {
+    const visited = await updateVisited(req.params.userId, req.params.naceId);
+
+    if(visited) {
+      return res.json("Updated successfuly");
     }else {
       return res.status(403).send("Organization not found or already topped.");
     }
